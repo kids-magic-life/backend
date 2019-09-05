@@ -60,13 +60,12 @@ model.methods = {
             username: this.username,
             email: this.email,
             avatar: this.avatar,
-            createdAt: this.createdAt,
-            updatedAt: this.updatedAt
         };
 
         return full ? {
             ...view,
-            password: this.password
+            createdAt: this.createdAt,
+            updatedAt: this.updatedAt
         } : view
     },
     authenticate (password) {

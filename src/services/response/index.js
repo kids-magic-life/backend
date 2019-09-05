@@ -31,12 +31,12 @@ export const isSelf = (context) => (entity) => {
 export const authorOrAdmin = (context) => (entity) => {
     if (entity) {
         const { Authorization } = context.services
-        const isAuthor = Authorization.user != null
+        const user = Authorization.user
+        const isAuthor = user && entity[0] && entity[0]._id.equals(user.id)
 
         if (isAuthor) {
             return entity
         }
-
 
         context.response.status = 401
         throw new Error('401 Not Authorized')
