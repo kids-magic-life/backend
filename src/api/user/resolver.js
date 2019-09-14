@@ -6,10 +6,7 @@ export default {
   Query: {
     users: (parent, args, context) => {
       return User.find({ username: { $regex: args.username, $options: 'i' } })
-        .then(users => users.map((user) => {
-          const { Authorization } = context.services
-          return user.view(Authorization.user.id == user._id)
-        }))
+        .then(users => users.map((user) => user.view(true)))
         .catch(error => console.log(error))
     },
     user: (parent, args, context) => {

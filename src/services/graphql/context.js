@@ -1,9 +1,9 @@
 import * as services from './services'
 
 export default class Context {
-  constructor ({ req, res }) {
-    this.request = req
-    this.response = res
+  constructor ({ request, response }) {
+    this.request = request
+    this.response = response
     this.services = {}
 
     for (const [name, Service] of Object.entries(services)) {
