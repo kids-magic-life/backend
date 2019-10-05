@@ -1,6 +1,7 @@
 import User from '../user/model'
+import { AuthenticationError } from 'apollo-server-koa'
 import { notFound } from '../../services/response'
-import { sign } from '../../services/jwt'
+import { sign, verify } from '../../services/jwt'
 
 export default {
   Query: {
@@ -16,8 +17,24 @@ export default {
             }
           }
 
-          return new Error('401')
+          return new AuthenticationError('Unauthorised')
         })
+        .catch(error => error)
+    },
+    verify: (parent, args, context) => {
+      return User.findOne({ id: verify(args.token).id })
+        .then(notFound(context))
+        .then(user => {
+          if (user) {
+            return {
+              token: sign(user.id),
+              user: user
+            }
+          }
+
+          return new AuthenticationError('Unauthorised')
+        })
+        .catch(error => error)
     }
   }
 }

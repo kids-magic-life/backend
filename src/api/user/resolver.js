@@ -16,7 +16,7 @@ export default {
           const { Authorization } = context.services
           return user.view(Authorization.user.id == user._id)
         })
-        .catch(error => console.log(error))
+        .catch(error => console.log('ERRR', error))
     }
   },
   Mutation: {
