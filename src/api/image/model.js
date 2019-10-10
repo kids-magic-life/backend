@@ -10,10 +10,6 @@ const model = new Schema(
       type: String,
       required: true
     },
-    file: {
-      type: String,
-      required: true
-    },
     location: {
       type: String,
       required: true
@@ -30,7 +26,6 @@ model.methods = {
       id: this.id,
       title: this.title,
       description: this.description,
-      file: this.file,
       location: this.location,
       createdAt: this.createdAt,
       updatedAt: this.updatedAt

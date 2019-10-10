@@ -4,7 +4,7 @@ type Image {
     id: ID!
     title: String!
     description: String!
-    file: Upload!
+    location: String!
     createdAt: String
     updatedAt: String
 }

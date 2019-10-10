@@ -1,6 +1,7 @@
 import Koa from 'koa'
 import { ApolloServer } from 'apollo-server-koa'
 import cors from '@koa/cors'
+import serve from 'koa-static'
 import { graphqlUploadKoa } from 'graphql-upload'
 import schema from '../../api/schema'
 import graphql from '../graphql'
@@ -17,6 +18,6 @@ export default () => {
   app.use(cors())
   app.use(server.getMiddleware())
   app.use(graphqlUploadKoa({ maxFileSize: 10000000, maxFiles: 8 }))
-
+  app.use(serve('./images/gallery'))
   return app
 }

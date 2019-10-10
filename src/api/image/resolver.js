@@ -1,12 +1,13 @@
 import _ from 'lodash'
 import Image from './model'
+import mongoose from 'mongoose'
 import { notFound, isSelf } from '../../services/response'
 import { createWriteStream } from 'fs'
 
-const storeUpload = ({ createReadStream, filename }) =>
+const storeUpload = ({ createReadStream, name }) =>
   new Promise((resolve, reject) =>
     createReadStream()
-      .pipe(createWriteStream(filename))
+      .pipe(createWriteStream( name))
       .on('finish', () => resolve())
       .on('error', reject)
   )
@@ -26,11 +27,20 @@ export default {
     }
   },
   Mutation: {
-    addImage: async (parent, args, context, { file }) => {
-      console.log(args)
-      const { createReadStream, filename } = await args.file
-      await storeUpload({ createReadStream, filename })
-      return true
+    addImage: async (parent, args, context) => {
+      const { createReadStream, mimetype } = await args.file
+      const name = new mongoose.Types.ObjectId().toString() + '.' + mimetype.split('/')[1]
+      let image = null
+
+      await storeUpload({ createReadStream, name }).then(() => {
+        image = new Image({
+          title: args.title,
+          description: args.description,
+          location: 'images/gallery/' + name
+        }).save()
+      })
+
+      return image
     },
     updateImage: (parent, args, context) => {
       return Image.findById(args.id)
