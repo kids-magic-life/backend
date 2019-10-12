@@ -3,11 +3,12 @@ import Image from './model'
 import mongoose from 'mongoose'
 import { notFound, isSelf } from '../../services/response'
 import { createWriteStream } from 'fs'
+import { ip, port } from '../../config'
 
 const storeUpload = ({ createReadStream, name }) =>
   new Promise((resolve, reject) =>
     createReadStream()
-      .pipe(createWriteStream( name))
+      .pipe(createWriteStream('images/gallery/' + name))
       .on('finish', () => resolve())
       .on('error', reject)
   )
@@ -36,7 +37,7 @@ export default {
         image = new Image({
           title: args.title,
           description: args.description,
-          location: 'images/gallery/' + name
+          location: ip + ':' + port + '/' + name
         }).save()
       })
 
