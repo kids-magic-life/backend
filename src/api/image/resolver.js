@@ -37,7 +37,7 @@ export default {
         image = new Image({
           title: args.title,
           description: args.description,
-          location: ip + ':' + port + '/' + name
+          location: 'http://localhost:9000' + '/' + name
         }).save()
       })
 
